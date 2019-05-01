@@ -1,0 +1,14 @@
+﻿@page
+@model Robinator.Core.Areas.RobinatorAdmin.Pages.Content.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Content Editor";
+}
+<h1>Content editor</h1>
+<ul>
+    @foreach (var type in Model.EditTypes)
+    {
+        <li><a asp-page="./List" asp-route-type="@type.Link">@type.Name</a></li>
+    }
+</ul>

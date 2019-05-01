@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview-19075-0444" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.3" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Robinator.Core.Bootstrap\Robinator.Core.Bootstrap.csproj" />
+    <ProjectReference Include="..\Robinator.Core.EF\Robinator.Core.EF.csproj" />
+    <ProjectReference Include="..\Robinator.Core\Robinator.Core.csproj" />
+  </ItemGroup>
+
+</Project>

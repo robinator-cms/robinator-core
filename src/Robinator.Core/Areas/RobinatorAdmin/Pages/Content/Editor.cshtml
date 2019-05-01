@@ -1,0 +1,13 @@
+﻿@page "{type}/{id?}"
+@model Robinator.Core.Areas.RobinatorAdmin.Pages.EditorModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<a asp-page="./List" asp-route-type="@Model.Type">Back</a><br />
+@using (var form = Html.BeginForm(FormMethod.Post))
+{
+    @foreach (var editor in Model.EditorFields)
+    {
+        @(editor.Text + ":") @editor.Html <br />
+    }
+    <input type="submit" />
+}

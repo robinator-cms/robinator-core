@@ -1,0 +1,8 @@
+﻿@page
+@model Robinator.Core.Areas.Pages.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@foreach (var page in Model.PageEntities)
+{
+    <a asp-area="Pages" asp-page="Get" asp-route-id="@(page.Id)">@(page.Title)</a>
+}

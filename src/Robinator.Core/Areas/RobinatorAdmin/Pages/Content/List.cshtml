@@ -1,0 +1,23 @@
+﻿@page "{type}"
+@model Robinator.Core.Areas.RobinatorAdmin.Pages.ListModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<a asp-page="./Index">Back</a><br />
+<a asp-page="./Editor" asp-route-type="@Model.Type">Create new</a>
+<ul>
+    @foreach (var content in Model.Contents)
+    {
+        <li><a asp-page="./Editor" asp-route-type="@Model.Type" asp-route-id="@content.Id">@content.Text</a></li>
+    }
+</ul>
+<p>
+    @if (Model.PageNumber > 0)
+    {
+        <a asp-page="./List" asp-route-type="@Model.Type" asp-route-pageNumber="@(Model.PageNumber - 1)">Back</a>
+    }
+    <span>@(Model.PageNumber + 1)</span>
+    @if (Model.PageNumber < (Model.Count - 1) / 10)
+    {
+        <a asp-page="./List" asp-route-type="@Model.Type" asp-route-pageNumber="@(Model.PageNumber + 1)">Next</a>
+    }
+</p>
