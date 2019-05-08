@@ -3,12 +3,22 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <a asp-page="./Index">Back</a><br />
-<ul>
+@if (string.IsNullOrEmpty(Model.EditorDefinition.SummaryPartialName))
+{
+    <ul>
+        @foreach (var content in Model.Contents)
+        {
+            <li><a href="@content.Link">@content.Text</a></li>
+        }
+    </ul>
+}
+else
+{
     @foreach (var content in Model.Contents)
     {
-        <li><a href="@content.Link">@content.Text</a></li>
+        @await Html.PartialAsync(Model.EditorDefinition.SummaryPartialName, content)
     }
-</ul>
+}
 <p>
     @if (Model.PageNumber > 0)
     {

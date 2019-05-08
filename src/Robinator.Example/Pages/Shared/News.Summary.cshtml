@@ -1,0 +1,16 @@
+﻿@model Robinator.Example.Areas.News.Models.NewsPost
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="post-preview">
+    <a href="/News/Get/@Model.Title">
+        <h2 class="post-title">
+            @Model.Title
+        </h2>
+        <h3 class="post-subtitle">
+        </h3>
+    </a>
+    <p class="post-meta">
+        Posted on @Model.PublishedAt.ToString("F")
+    </p>
+</div>
+<hr>

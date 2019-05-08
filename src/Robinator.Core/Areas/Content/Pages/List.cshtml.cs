@@ -21,6 +21,7 @@ namespace Robinator.Core.Areas.Content.Pages
         public long Count { get; set; }
         public List<ViewModels.ContentHeaderViewModel> Contents { get; } = new List<ViewModels.ContentHeaderViewModel>();
         public string TypeName { get; private set; }
+        public DefaultEditPageConfiguation EditorDefinition { get; private set; }
 
         public ListModel(IOptionsMonitor<RobinatorOptions> options, IServiceProvider serviceProvider)
         {
@@ -29,12 +30,12 @@ namespace Robinator.Core.Areas.Content.Pages
         }
         public async Task OnGet(CancellationToken cancellationToken)
         {
-            var editorDefinition = options.DefaultEditPages.Find(x => x.Link == Type);
-            if (editorDefinition == null)
+            EditorDefinition = options.DefaultEditPages.Find(x => x.Link == Type);
+            if (EditorDefinition == null)
             {
                 throw new ArgumentOutOfRangeException($"No type is found with default edit link {Type}");
             }
-            var dataType = editorDefinition.Type;
+            var dataType = EditorDefinition.Type;
             var repository = CreateRepository(dataType);
             var linkFinder = CreateLinkFinder(dataType);
             Count = await repository.CountAsync(cancellationToken);
@@ -49,14 +50,15 @@ namespace Robinator.Core.Areas.Content.Pages
             var list = repository.GetList(PageNumber, 10);
             foreach (var item in list as IEnumerable)
             {
-                var x = editorDefinition.Projection(item);
+                var x = EditorDefinition.Projection(item);
                 Contents.Add(new ViewModels.ContentHeaderViewModel
                 {
                     Text = x.Text,
                     Link = await linkFinder.LinkLookupAsync(item),
-                });
+                    OriginalContent = item,
+                });;
             }
-            TypeName = editorDefinition.Name;
+            TypeName = EditorDefinition.Name;
         }
         private IContentRepository CreateRepository(Type dataType)
         {

@@ -36,11 +36,11 @@ namespace Robinator.Example
                 Id = x.Id,
                 Text = x.Title,
             }));
-            services.AddRobinatorTypeDynamic(editPageConfiguration: new DefaultEditPageConfiguation<NewsPost>("News", x => new ContentHeaderViewModel
+            services.AddRobinatorTypeDynamic(editPageConfiguration: new DefaultEditPageConfiguation<NewsPost>(x => new ContentHeaderViewModel
             {
                 Id = x.Id,
                 Text = x.Title,
-            }));
+            }, name: "News", summaryPartialName: "News.Summary"));
 
             services.AddMvc()
                 .AddNewtonsoftJson();
