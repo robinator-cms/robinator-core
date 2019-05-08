@@ -59,13 +59,13 @@ namespace Robinator.Core.EF
             context.Entry(content).State = EntityState.Detached;
         }
 
-        public virtual TContent GetContent(Guid id) => context.Set<TContent>().AsNoTracking().SingleOrDefault(c => c.Id == id);
+        public virtual TContent GetContent(Guid id) => Query().SingleOrDefault(c => c.Id == id);
 
-        public virtual Task<TContent> GetContentAsync(Guid id, CancellationToken cancellationToken = default) => context.Set<TContent>().AsNoTracking().SingleOrDefaultAsync(c => c.Id == id, cancellationToken);
+        public virtual Task<TContent> GetContentAsync(Guid id, CancellationToken cancellationToken = default) => Query().SingleOrDefaultAsync(c => c.Id == id, cancellationToken);
 
-        public virtual IList<TContent> GetList(int page, int pageSize) => context.Set<TContent>().Skip(page * pageSize).Take(pageSize).AsNoTracking().ToList();
+        public virtual IList<TContent> GetList(int page, int pageSize) => Query().Skip(page * pageSize).Take(pageSize).ToList();
 
-        public virtual async Task<IList<TContent>> GetListAsync(int page, int pageSize, CancellationToken cancellationToken = default) => await context.Set<TContent>().Skip(page * pageSize).Take(pageSize).AsNoTracking().ToListAsync(cancellationToken);
+        public virtual async Task<IList<TContent>> GetListAsync(int page, int pageSize, CancellationToken cancellationToken = default) => await Query().Skip(page * pageSize).Take(pageSize).ToListAsync(cancellationToken);
 
         public virtual void UpdateContent(TContent content)
         {
@@ -91,5 +91,10 @@ namespace Robinator.Core.EF
         IList<object> IContentRepository.GetList(int page, int pageSize) => GetList(page, pageSize).Cast<object>().ToList();
 
         async Task<IList<object>> IContentRepository.GetListAsync(int page, int pageSize, CancellationToken cancellationToken) => (await GetListAsync(page, pageSize, cancellationToken)).Cast<object>().ToList();
+
+        public virtual IQueryable<TContent> Query()
+        {
+            return context.Set<TContent>().AsNoTracking();
+        }
     }
 }

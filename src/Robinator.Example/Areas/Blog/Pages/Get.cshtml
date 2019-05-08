@@ -13,7 +13,7 @@
                 <div class="post-heading">
                     <h1>@Model.BlogPost.Title</h1>
                     <span class="meta">
-                        Posted on @Model.BlogPost.PublishedAt.ToString("F")
+                        Posted by @Model.BlogPost.CreatedBy.UserName on @Model.BlogPost.PublishedAt.ToString("F")
                     </span>
                 </div>
             </div>
@@ -30,4 +30,33 @@
         </div>
     </div>
 </article>
+
+@{
+    var ratingCount = Model.BlogPost.Stars.Count();
+    var rating = Model.BlogPost.Stars.Average(x => x.Stars);
+    if (rating == 0)
+    {
+        rating = 5;
+    }
+}
+<p>
+    <i class="fas fa-star"></i>
+    <i class="fa@((rating > 1) ? 's' : 'r') fa-star"></i>
+    <i class="fa@((rating > 2) ? 's' : 'r') fa-star"></i>
+    <i class="fa@((rating > 3) ? 's' : 'r') fa-star"></i>
+    <i class="fa@((rating > 4) ? 's' : 'r') fa-star"></i>
+</p>
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@if (SignInManager.IsSignedIn(User))
+{
+    <form id="logoutForm" class="form-inline" asp-area="Blog" asp-page="/Get" asp-route-id="@Model.BlogPost.Id" method="post">
+        <div class="form-control">
+            <label>Stars</label>
+            <input type="number" name="stars" min="1" max="5" step="1" />
+        </div>
+        <button type="submit" class="btn btn-primary">Rate it</button>
+    </form>
+}
 

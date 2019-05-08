@@ -1,4 +1,5 @@
-﻿using Robinator.Core;
+﻿using Microsoft.AspNetCore.Identity;
+using Robinator.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +16,9 @@ namespace Robinator.Example.Areas.Blog.Models
         public string Title { get; set; }
         [TextEditor]
         public string Image { get; set; }
-        public DateTimeOffset PublishedAt { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset PublishedAt { get; set; }
         public ICollection<BlogPostStars> Stars { get; private set; } = new HashSet<BlogPostStars>();
+        public string CreatedById { get; set; }
+        public IdentityUser CreatedBy { get; set; }
     }
 }

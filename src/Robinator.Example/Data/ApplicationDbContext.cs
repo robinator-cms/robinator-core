@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Robinator.Core.EF;
 using Robinator.Example.Areas.Blog.Models;
 using Robinator.Example.Areas.News.Models;
 
 namespace Robinator.Example
 {
-    public class ApplicationDbContext : DbContext, IDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>, IDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

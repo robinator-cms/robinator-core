@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Robinator.Core;
-using Robinator.Example.Areas.Blog.Content;
 using Robinator.Example.Areas.Blog.Models;
-using Robinator.Example.Areas.News.Content;
+using Robinator.Example.Areas.Identity.Services;
 using Robinator.Example.Areas.News.Models;
 
 namespace Robinator.Example
@@ -31,6 +33,18 @@ namespace Robinator.Example
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("application"));
+
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+            services.AddSingleton<IEmailSender, EmailSender>();
+
             services.AddRobinatorTypeDynamic(editPageConfiguration: new DefaultEditPageConfiguation<BlogPost>(x => new ContentHeaderViewModel
             {
                 Id = x.Id,
@@ -43,6 +57,10 @@ namespace Robinator.Example
             }, name: "News", summaryPartialName: "News.Summary"));
 
             services.AddMvc()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizeAreaFolder("RobinatorAdmin", "/");
+                })
                 .AddNewtonsoftJson();
             services.AddRobinatorDeafult().AddRobinatorDefaultEntityFramework(options => options.UseInMemoryDatabase("test"));
             services.AddRobinatorCKEditor();
@@ -54,6 +72,7 @@ namespace Robinator.Example
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -72,6 +91,8 @@ namespace Robinator.Example
             });
 
             app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
         }
