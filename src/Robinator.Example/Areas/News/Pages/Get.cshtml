@@ -1,0 +1,33 @@
+﻿@page "{name}"
+@model Robinator.Core.Areas.News.Pages.GetModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = Model.News.Title + " | News";
+}
+
+<header class="masthead" style="background-image: url('@Model.News.Image')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-heading">
+                    <h1>@Model.News.Title</h1>
+                    <span class="meta">
+                        Posted on @Model.News.PublishedAt.ToString("F")
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                @Html.Raw(Model.News.Text)
+            </div>
+        </div>
+    </div>
+</article>
+

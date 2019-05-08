@@ -11,12 +11,12 @@ namespace Robinator.Core.Editors.Defaults
             return a.ToString();
         }
 
-        public TagBuilder GetView(string name, object data)
+        public EditorTagData GetView(string name, object data)
         {
             var builder = new TagBuilder("textarea");
             builder.Attributes.Add("name", name);
             builder.InnerHtml.AppendHtml(data as string);
-            return builder;
+            return new EditorTagData(builder);
         }
     }
 }

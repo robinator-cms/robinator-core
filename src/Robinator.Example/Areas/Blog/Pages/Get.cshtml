@@ -1,0 +1,33 @@
+﻿@page "{id}"
+@model Robinator.Core.Areas.Blog.Pages.GetModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = Model.BlogPost.Title + " | Blog post";
+}
+
+<header class="masthead" style="background-image: url('@Model.BlogPost.Image')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-heading">
+                    <h1>@Model.BlogPost.Title</h1>
+                    <span class="meta">
+                        Posted on @Model.BlogPost.PublishedAt.ToString("F")
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                @Model.BlogPost.Text
+            </div>
+        </div>
+    </div>
+</article>
+

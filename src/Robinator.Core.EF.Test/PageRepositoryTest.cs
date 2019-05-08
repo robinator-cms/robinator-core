@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using Robinator.Core.Areas.Pages;
 using Robinator.Core.EF.Data;
@@ -10,10 +11,6 @@ namespace Robinator.Core.EF.Test
 {
     public class PageRepositoryTest : RepositoryUnitTest<PageRepository, Page>
     {
-        public PageRepositoryTest() : base(new PageRepository(new RobinatorDbContext(new DbContextOptionsBuilder<RobinatorDbContext>().UseInMemoryDatabase("test").Options)))
-        {
-        }
-
         public override void AssertRandomContent(Page originalContent, Page result)
         {
             Assert.Equal(originalContent.Id, result.Id);
@@ -27,6 +24,11 @@ namespace Robinator.Core.EF.Test
             Text = "Test text " + id.ToString().Substring(0, 4),
             Title = "Test title" + id.ToString().Substring(4, 4),
         };
+
+        public override PageRepository SetupRepository([CallerMemberName] string testName = "")
+        {
+            return new PageRepository(new RobinatorDbContext(new DbContextOptionsBuilder<RobinatorDbContext>().UseInMemoryDatabase($"PageTest_{testName}").Options));
+        }
 
         public override Page UpdateRandomContent(Page originalContent) => new Page
         {

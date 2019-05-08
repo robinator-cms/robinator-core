@@ -7,7 +7,7 @@
 {
     @foreach (var editor in Model.EditorFields)
     {
-        @(editor.Text + ":") @editor.Html <br />
+        @(editor.Text + ":") @editor.Html @editor.Others <br />
     }
     <input type="submit" />
 }

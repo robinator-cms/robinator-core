@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Robinator.Core.Areas.Content.Pages.ViewModels
+﻿namespace Robinator.Core.Areas.Content.Pages.ViewModels
 {
     public class ContentHeaderViewModel
     {

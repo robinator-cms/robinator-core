@@ -15,6 +15,7 @@
     <ProjectReference Include="..\Robinator.Core.Bootstrap\Robinator.Core.Bootstrap.csproj" />
     <ProjectReference Include="..\Robinator.Core.EF\Robinator.Core.EF.csproj" />
     <ProjectReference Include="..\Robinator.Core\Robinator.Core.csproj" />
+    <ProjectReference Include="..\Robinator.Editors.CKEditor\Robinator.Editors.CKEditor.csproj" />
   </ItemGroup>
 
 </Project>

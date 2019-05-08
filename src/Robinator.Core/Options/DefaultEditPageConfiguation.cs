@@ -1,14 +1,14 @@
-﻿using Robinator.Core.Areas.RobinatorAdmin.Pages.ViewModels;
-using System;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Robinator.Core
 {
     public class DefaultEditPageConfiguation
     {
-        public DefaultEditPageConfiguation(string link, string name, Func<object, ContentHeaderViewModel> projection, Type type)
+        public DefaultEditPageConfiguation(string name, string link, Func<object, ContentHeaderViewModel> projection, Type type)
         {
-            Link = link;
             Name = name;
+            Link = link;
             Projection = projection;
             Type = type;
         }
@@ -20,12 +20,16 @@ namespace Robinator.Core
 
     public class DefaultEditPageConfiguation<TContent> : DefaultEditPageConfiguation where TContent : class, IContent
     {
-        public DefaultEditPageConfiguation(string link, string name, Func<object, ContentHeaderViewModel> projection) : base(link, name, projection, typeof(TContent))
+        public DefaultEditPageConfiguation(string name, string link, Func<object, ContentHeaderViewModel> projection) : base(link, name, projection, typeof(TContent))
+        {
+        }
+        public DefaultEditPageConfiguation(string name, Func<TContent, ContentHeaderViewModel> projection) : base(
+            name, typeof(TContent).Name.ToLower(), o => projection(o as TContent), typeof(TContent))
         {
         }
 
-        public DefaultEditPageConfiguation(Func<object, ContentHeaderViewModel> projection) : base(
-            typeof(TContent).Name.ToLower(), typeof(TContent).Name, projection, typeof(TContent))
+        public DefaultEditPageConfiguation(Func<TContent, ContentHeaderViewModel> projection) : base(
+            Regex.Replace(typeof(TContent).Name, "[A-Z]", " $0"), typeof(TContent).Name.ToLower(), o => projection(o as TContent), typeof(TContent))
         {
         }
     }

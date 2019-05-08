@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
-using Robinator.Core.Areas.RobinatorAdmin.Pages.ViewModels;
 
 namespace Robinator.Core.Areas.RobinatorAdmin.Pages
 {

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
-using Robinator.Core.Areas.Content.Pages.ViewModels;
 
 namespace Robinator.Core.Areas.Content.Pages
 {
@@ -20,7 +19,7 @@ namespace Robinator.Core.Areas.Content.Pages
         [BindProperty(SupportsGet = true)]
         public int PageNumber { get; set; } = 0;
         public long Count { get; set; }
-        public List<ContentHeaderViewModel> Contents { get; } = new List<ContentHeaderViewModel>();
+        public List<ViewModels.ContentHeaderViewModel> Contents { get; } = new List<ViewModels.ContentHeaderViewModel>();
         public string TypeName { get; private set; }
 
         public ListModel(IOptionsMonitor<RobinatorOptions> options, IServiceProvider serviceProvider)
@@ -51,7 +50,7 @@ namespace Robinator.Core.Areas.Content.Pages
             foreach (var item in list as IEnumerable)
             {
                 var x = editorDefinition.Projection(item);
-                Contents.Add(new ContentHeaderViewModel
+                Contents.Add(new ViewModels.ContentHeaderViewModel
                 {
                     Text = x.Text,
                     Link = await linkFinder.LinkLookupAsync(item),

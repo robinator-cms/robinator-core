@@ -11,14 +11,14 @@ namespace Robinator.Core.Editors.Defaults
             return a.ToString();
         }
 
-        public TagBuilder GetView(string name, object data)
+        public EditorTagData GetView(string name, object data)
         {
             var builder = new TagBuilder("input");
             builder.Attributes.Add("name", name);
             builder.Attributes.Add("value", data?.ToString());
             builder.Attributes.Add("type", "text");
             builder.TagRenderMode = TagRenderMode.SelfClosing;
-            return builder;
+            return new EditorTagData(builder);
         }
     }
 }

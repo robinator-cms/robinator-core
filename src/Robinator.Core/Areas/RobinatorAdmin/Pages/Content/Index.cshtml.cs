@@ -17,7 +17,7 @@ namespace Robinator.Core.Areas.RobinatorAdmin.Pages.Content
 
         public void OnGet()
         {
-            EditTypes = this.options.DefaultEditPages;
+            EditTypes = options.DefaultEditPages;
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Robinator.Core.Editors;
 
 namespace Robinator.Core
 {
     public interface IEditor
     {
-        TagBuilder GetView(string name, object data);
-        object GetValue(string name, HttpRequest request); 
+        EditorTagData GetView(string name, object data);
+        object GetValue(string name, HttpRequest request);
     }
 }

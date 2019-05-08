@@ -45,9 +45,11 @@ namespace Robinator.Core.Areas.RobinatorAdmin.Pages
             EditorFields = dataType.GetAllEditorFields().Select(x =>
             {
                 var editor = serviceProvider.GetService(x.Editor) as IEditor ?? serviceProvider.GetService(typeof(ITextEditor)) as IEditor;
+                var editorData = editor.GetView(x.Property.Name, x.Property.GetValue(data));
                 return new EditorFieldViewModel
                 {
-                    Html = editor.GetView(x.Property.Name, x.Property.GetValue(data)),
+                    Html = editorData.EditorTag,
+                    Others = editorData.Others,
                     Text = x.Property.GetCustomAttributes(true)
                         .Where(p => p.GetType() == typeof(DisplayNameAttribute))
                         .Cast<DisplayAttribute>()

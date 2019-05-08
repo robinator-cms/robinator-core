@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Robinator.Core.Areas.RobinatorAdmin.Pages.ViewModels
+namespace Robinator.Core
 {
     public class ContentHeaderViewModel
     {

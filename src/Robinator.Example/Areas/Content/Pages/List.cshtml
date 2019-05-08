@@ -1,0 +1,57 @@
+﻿@page "{type}"
+@model Robinator.Core.Areas.Content.Pages.ListModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "List";
+}
+<header class="masthead" style="background-image: url('/img/about-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>@Model.TypeName</h1>
+                    <span class="subheading">See all my @Model.TypeName</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<a asp-page="./Index">Back</a><br />
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            @foreach (var content in Model.Contents)
+            {
+                <div class="post-preview">
+                    <a href="@content.Link">
+                        <h2 class="post-title">
+                            @content.Text
+                        </h2>
+                        @*<h3 class="post-subtitle">
+                                Problems look mighty small from 150 miles up
+                            </h3>*@
+                    </a>
+                    @*<p class="post-meta">
+                            Posted by
+                            <a href="#">Start Bootstrap</a>
+                            on September 24, 2019
+                        </p>*@
+                </div>
+                <hr>
+            }
+            <div class="clearfix">
+                @if (Model.PageNumber > 0)
+                {
+                    <a class="btn btn-primary float-left" asp-page="./List" asp-route-type="@Model.Type" asp-route-pageNumber="@(Model.PageNumber - 1)">Newer Posts &rarr;</a>
+                }
+                @if (Model.PageNumber < (Model.Count - 1) / 10)
+                {
+                    <a class="btn btn-primary float-right" asp-page="./List" asp-route-type="@Model.Type" asp-route-pageNumber="@(Model.PageNumber + 1)">Older Posts &rarr;</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

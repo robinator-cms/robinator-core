@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Robinator.Core;
+using Robinator.Example.Areas.Blog.Content;
+using Robinator.Example.Areas.Blog.Models;
+using Robinator.Example.Areas.News.Content;
+using Robinator.Example.Areas.News.Models;
 
 namespace Robinator.Example
 {
@@ -25,11 +30,22 @@ namespace Robinator.Example
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("application"));
+            services.AddRobinatorTypeDynamic(editPageConfiguration: new DefaultEditPageConfiguation<BlogPost>(x => new ContentHeaderViewModel
+            {
+                Id = x.Id,
+                Text = x.Title,
+            }));
+            services.AddRobinatorTypeDynamic(editPageConfiguration: new DefaultEditPageConfiguation<NewsPost>("News", x => new ContentHeaderViewModel
+            {
+                Id = x.Id,
+                Text = x.Title,
+            }));
 
             services.AddMvc()
                 .AddNewtonsoftJson();
             services.AddRobinatorDeafult().AddRobinatorDefaultEntityFramework(options => options.UseInMemoryDatabase("test"));
+            services.AddRobinatorCKEditor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
