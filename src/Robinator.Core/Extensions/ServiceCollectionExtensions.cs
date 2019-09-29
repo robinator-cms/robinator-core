@@ -74,7 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
             var repositoryType = assembly.GetTypes().Where(x => x.IsClass && typeof(IContentRepository<TEntity>).IsAssignableFrom(x)).FirstOrDefault();
             if (repositoryType == null)
             {
-                throw new NotImplementedException($"No repository found for {typeof(TEntity).Name}. Please create a class that implements IContentRepository<{typeof(TEntity).Name}>.");
+                throw new InvalidOperationException($"No repository found for {typeof(TEntity).Name}. Please create a class that implements IContentRepository<{typeof(TEntity).Name}>.");
             }
             services.AddTransient(typeof(IContentRepository<TEntity>), repositoryType);
             foreach (var @interface in repositoryType.GetInterfaces().Where(x => x.Name.ToLower().Contains("repository") && x != typeof(IContentRepository<TEntity>)))

@@ -37,7 +37,10 @@
                         <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
+                        <a class="nav-link" asp-area="Content" asp-page="/List" asp-route-type="news">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Content" asp-page="/List" asp-route-type="blogpost">Blog</a>
                     </li>
                 </ul>
                 <partial name="_LoginPartial" />

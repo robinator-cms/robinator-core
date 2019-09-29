@@ -19,8 +19,11 @@ namespace Robinator.Core.Areas.Blog.Pages
         }
 
         public BlogPost BlogPost { get; private set; }
+        [BindProperty]
+        [Range(1, 5)]
+        public int Stars { get; set; }
 
-        public async Task<IActionResult> OnGet(Guid? id)
+        public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (!ModelState.IsValid || !id.HasValue)
             {
@@ -29,14 +32,14 @@ namespace Robinator.Core.Areas.Blog.Pages
             BlogPost = await repository.GetContentAsync(id.Value);
             return Page();
         }
-        public async Task<IActionResult> OnPost(Guid? id, [Range(1, 5)]int stars)
+        public async Task<IActionResult> OnPostAsync(Guid? id)
         {
             if (!ModelState.IsValid || !id.HasValue)
             {
                 return BadRequest();
             }
-            await repository.RateAsync(id.Value, stars);
-            return await OnGet(id);
+            await repository.RateAsync(id.Value, Stars);
+            return await OnGetAsync(id);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Robinator.Example
             {
                 Id = x.Id,
                 Text = x.Title,
-            }, name: "News", summaryPartialName: "News.Summary"));
+            }, name: "News", summaryPartialName: "News.Summary", link: "news"));
 
             services.AddMvc()
                 .AddRazorPagesOptions(options =>

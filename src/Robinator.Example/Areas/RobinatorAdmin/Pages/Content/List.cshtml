@@ -5,9 +5,9 @@
     Layout = "_Layout";
     ViewData["Title"] = $"{Model.TypeName} Listing";
 }
-<a asp-page="./Index" class="btn btn-link">Back</a><br />
-<a asp-page="./Editor" asp-route-type="@Model.Type" class="btn btn-primary">Create new</a>
-<ul class="list-group">
+<a asp-page="./Index" class="btn btn-link">Back</a>
+<a asp-page="./Editor" asp-route-type="@Model.Type" class="btn btn-primary float-right">Create new</a>
+<ul class="list-group my-3">
     @foreach (var content in Model.Contents)
     {
         <li class="list-group-item"><a asp-page="./Editor" asp-route-type="@Model.Type" asp-route-id="@content.Id">@content.Text</a></li>

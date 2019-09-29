@@ -41,7 +41,7 @@ namespace Robinator.Example.Areas.Blog.Content
         public async Task RateAsync(Guid id, int stars)
         {
             var user = httpContextAccessor.HttpContext.User;
-            if (stars < 1 || stars > 5 || signInManager.IsSignedIn(user) || !Query().Any(x => x.Id == id))
+            if (stars < 1 || stars > 5 || !signInManager.IsSignedIn(user) || !Query().Any(x => x.Id == id))
             {
                 throw new ArgumentOutOfRangeException();
             }
