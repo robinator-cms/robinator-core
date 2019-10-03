@@ -4,14 +4,13 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  - master
+pr:
+  - dev
 
 pool:
-  vmImage: 'ubuntu-latest'
-
-variables:
-  buildConfiguration: 'Release'
+  vmImage: "ubuntu-latest"
 
 steps:
-- script: ./build.sh
-  displayName: 'Run cake'
+  - script: ./build.sh
+    displayName: "Run cake"
