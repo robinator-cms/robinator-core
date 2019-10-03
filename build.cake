@@ -16,12 +16,12 @@ var configuration = "Release";
 var nugetApiKey = EnvironmentVariable<string>("nuget_api_key", null);
 var nugetSource = "https://api.nuget.org/v3/index.json";
 
-var version = GetVersion();
+var versionSuffix = "";
 
 if (!isMasterBranch) {
   var gitSha1 = GitLogTip("./").Sha.Substring(0,12);
-  Information("This is a dev build." + gitSha1 + " will be added to the version");
-  version += "-dev-" + gitSha1;
+  versionSuffix = "dev-" + gitSha1;
+  Information("This is a dev build. " + versionSuffix + " will be added to the version");
 }
 
 Task("Clean")
@@ -52,26 +52,23 @@ Task("Build")
   .Does(() =>
   {
     DotNetCoreBuild(
-        solutionPath,
-        new DotNetCoreBuildSettings 
-        {
-            Configuration = configuration
-        }
+      solutionPath,
+      new DotNetCoreBuildSettings 
+      {
+        Configuration = configuration
+      }
     );
   });
 
 Task("Package")
   .Does(() => {
-    Information("Version = " + version);
-    var settings = new NuGetPackSettings
+    Information("Version = " + GetVersion() + versionSuffix);
+    var settings = new DotNetCorePackSettings
     {
       OutputDirectory = artifactsDir,
-		  IncludeReferencedProjects = true,
-      Properties = new Dictionary<string, string>
-      {
-        { "Configuration", "Release" }
-      },
-      Version = version
+      Configuration = "Release",
+      VersionSuffix = versionSuffix,
+      NoBuild = true
     };
     
     var pkgs = GetFiles("./src/**/*.csproj");
@@ -79,7 +76,7 @@ Task("Package")
     {
       var filename = pkg.GetFilenameWithoutExtension().ToString();
       if (!filename.EndsWith("Test") && !filename.EndsWith("Example"))
-        NuGetPack(pkg.ToString(), settings);
+        DotNetCorePack(pkg.ToString(), settings);
     }
   });
 
@@ -124,7 +121,7 @@ private bool IsNuGetPublished(FilePath packagePath) {
 private string GetVersion() {
   XmlDocument doc = new XmlDocument();
   doc.LoadXml(System.IO.File.ReadAllText("./src/.targets"));
-  XmlNode versionNode = doc.DocumentElement.SelectSingleNode("/Project/PropertyGroup/Version");
+  XmlNode versionNode = doc.DocumentElement.SelectSingleNode("/Project/PropertyGroup/VersionPrefix");
   return versionNode.InnerText;
 }
 

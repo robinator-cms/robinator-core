@@ -1,5 +1,13 @@
 <Project>
   <PropertyGroup>
-    <Version>0.0.1</Version>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <Authors>Robin Csutorás</Authors>
+    <Product>Robinator</Product>
+    <Description></Description>
+    <Copyright>Copyright 2019-</Copyright>
+    <PackageProjectUrl>https://github.com/robinator-cms/robinator-core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/robinator-cms/robinator-core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GenerateAssemblyInfo></GenerateAssemblyInfo>
   </PropertyGroup>
 </Project>
