@@ -17,17 +17,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IContentLinkFinder<Page>, PageContentLinkFinder>();
             return services;
         }
-        public static IServiceCollection AddRobinatorDeafult(this IServiceCollection services)
-        {
-            return services.AddRobinator(options =>
-            {
-                options.DefaultEditPages.Add(new DefaultEditPageConfiguation<Page>(x => new ContentHeaderViewModel
-                {
-                    Id = x.Id,
-                    Text = x.Title,
-                }));
-            });
-        }
 
         public static IServiceCollection AddRobinatorType<TEntity, TRepository>(this IServiceCollection services, Action<RobinatorOptions> options = null, DefaultEditPageConfiguation<TEntity> editPageConfiguration = null)
             where TEntity : class, IContent

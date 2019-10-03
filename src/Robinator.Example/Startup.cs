@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Robinator.Core;
 using Robinator.Example.Areas.Blog.Models;
 using Robinator.Example.Areas.Identity.Services;
@@ -35,7 +35,6 @@ namespace Robinator.Example
             services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("application"));
 
             services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.ConfigureApplicationCookie(options =>
             {
@@ -62,12 +61,13 @@ namespace Robinator.Example
                     options.Conventions.AuthorizeAreaFolder("RobinatorAdmin", "/");
                 })
                 .AddNewtonsoftJson();
-            services.AddRobinatorDeafult().AddRobinatorDefaultEntityFramework(options => options.UseInMemoryDatabase("test"));
+            services.AddRobinatorDeafult()
+                    .AddRobinatorDefaultEntityFramework(options => options.UseInMemoryDatabase("test"));
             services.AddRobinatorCKEditor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -84,17 +84,19 @@ namespace Robinator.Example
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting(routes =>
-            {
-                routes.MapRazorPages();
-                routes.MapApplication();
-            });
+            app.UseRouting();
 
             app.UseCookiePolicy();
 
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapControllers();
+            });
         }
     }
 }
