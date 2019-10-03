@@ -5,7 +5,6 @@ using System.Xml;
 
 var target = Argument("target", "Default");
 var isLocalBuild = BuildSystem.IsLocalBuild;
-var isAzureBuild = BuildSystem.IsRunningOnAzurePipelines;
 var branch = BuildSystem.TFBuild.Environment.Repository.Branch ?? Argument<string>("currentBranch", GitBranchCurrent("./").FriendlyName);
 var isMasterBranch = StringComparer.OrdinalIgnoreCase.Equals("master", branch);
 
@@ -19,10 +18,9 @@ var nugetSource = "https://api.nuget.org/v3/index.json";
 var version = GetVersion();
 
 if (!isMasterBranch) {
-  version += "-dev";
-  if (isAzureBuild) {
-    version += BuildSystem.TFBuild.Environment.Build.Number;
-  }
+  var gitSha1 = GitLogTip("./").Sha.Substring(0,12);
+  Information("This is a dev build." + gitSha1 + " will be added to the version");
+  version += "-dev-" + gitSha1;
 }
 
 Task("Clean")
