@@ -129,7 +129,7 @@ private string GetVersion() {
 
 Task("Default")
   .IsDependentOn("Build")
-  .IsDependentOn("Package")
+  .IsDependentOn("Publish")
   .Does(() => 
   {
   });
