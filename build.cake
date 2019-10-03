@@ -7,6 +7,7 @@ var target = Argument("target", "Default");
 var isLocalBuild = BuildSystem.IsLocalBuild;
 var branch = BuildSystem.TFBuild.Environment.Repository.Branch ?? Argument<string>("currentBranch", GitBranchCurrent("./").FriendlyName);
 var isMasterBranch = StringComparer.OrdinalIgnoreCase.Equals("master", branch);
+var isDevBranch = StringComparer.OrdinalIgnoreCase.Equals("dev", branch);
 
 var artifactsDir = "./artifacts/";
 var solutionPath = "./src/Robinator.sln";
@@ -84,7 +85,7 @@ Task("Package")
 
 Task("Publish")
   .IsDependentOn("Package")
-  .WithCriteria(isMasterBranch)
+  .WithCriteria(isMasterBranch || isDevBranch)
   .Does(() => {
     var pushSettings = new DotNetCoreNuGetPushSettings 
     {
