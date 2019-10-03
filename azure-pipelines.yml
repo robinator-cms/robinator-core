@@ -13,5 +13,10 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET core 3.0'
+  inputs:
+    packageType: 'sdk'
+    version: '3.0.100'
 - script: ./build.sh
   displayName: 'Run cake'
