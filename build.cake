@@ -16,7 +16,7 @@ var artifactsDir = "./artifacts/";
 var solutionPath = "./src/Robinator.sln";
 var project = "./src/Robinator.App/Robinator.App.csproj";
 var configuration = "Release";
-var nugetApiKey = EnvironmentVariable<string>("nuget_api_key", null);
+var nugetApiKey = EnvironmentVariable<string>("NUGET_API_KEY", null);
 var nugetSource = "https://api.nuget.org/v3/index.json";
 
 var versionSuffix = "";
