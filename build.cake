@@ -5,7 +5,10 @@ using System.Xml;
 
 var target = Argument("target", "Default");
 var isLocalBuild = BuildSystem.IsLocalBuild;
-var branch = Argument<string>("currentBranch", GitBranchCurrent("./").FriendlyName);
+var branch = BuildSystem.TFBuild.Environment.Repository.Branch;
+if (string.IsNullOrWhiteSpace(branch)) {
+  branch = Argument<string>("currentBranch", GitBranchCurrent("./").FriendlyName);
+}
 var isMasterBranch = StringComparer.OrdinalIgnoreCase.Equals("master", branch);
 var isDevBranch = StringComparer.OrdinalIgnoreCase.Equals("dev", branch);
 
