@@ -23,7 +23,7 @@ var versionSuffix = "";
 
 if (!isMasterBranch) {
   var gitSha1 = GitLogTip("./").Sha.Substring(0,12);
-  versionSuffix = "dev-" + gitSha1;
+  versionSuffix = "dev+" + gitSha1;
   Information("This is a dev build. " + versionSuffix + " will be added to the version");
 }
 
@@ -84,7 +84,6 @@ Task("Package")
   });
 
 Task("Publish")
-  .IsDependentOn("Package")
   .WithCriteria(isMasterBranch || isDevBranch)
   .Does(() => {
     var pushSettings = new DotNetCoreNuGetPushSettings 
@@ -96,30 +95,10 @@ Task("Publish")
     var pkgs = GetFiles(artifactsDir + "*.nupkg");
     foreach(var pkg in pkgs) 
     {
-      if(!IsNuGetPublished(pkg)) 
-      {
-        Information($"Publishing \"{pkg}\".");
-        DotNetCoreNuGetPush(pkg.FullPath, pushSettings);
-      }
-      else {
-        Information($"Bypassing publishing \"{pkg}\" as it is already published.");
-      }
+      Information($"Publishing \"{pkg}\".");
+      DotNetCoreNuGetPush(pkg.FullPath, pushSettings);
     }
   });
-  
-private bool IsNuGetPublished(FilePath packagePath) {
-  var package = new ZipPackage(packagePath.FullPath);
-
-  var latestPublishedVersions = NuGetList(
-    package.Id,
-    new NuGetListSettings 
-    {
-      Prerelease = true
-    }
-  );
-
-  return latestPublishedVersions.Any(p => package.Version.Equals(new SemanticVersion(p.Version)));
-}
 
 private string GetVersion() {
   XmlDocument doc = new XmlDocument();
@@ -130,6 +109,7 @@ private string GetVersion() {
 
 Task("Default")
   .IsDependentOn("Build")
+  .IsDependentOn("Package")
   .IsDependentOn("Publish")
   .Does(() => 
   {
