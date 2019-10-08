@@ -4,13 +4,14 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  - master
+  - dev
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 variables:
-  buildConfiguration: 'Release'
+  buildConfiguration: "Release"
 
 steps:
 - task: UseDotNet@2
@@ -20,3 +21,5 @@ steps:
     version: '3.0.100'
 - script: ./build.sh
   displayName: 'Run cake'
+  env:
+    NUGET_API_KEY: $(NUGET_API_KEY)
