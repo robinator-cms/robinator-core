@@ -58,7 +58,8 @@ Task("Build")
       solutionPath,
       new DotNetCoreBuildSettings 
       {
-        Configuration = configuration
+        Configuration = configuration,
+        VersionSuffix = versionSuffix
       }
     );
   });
@@ -69,7 +70,7 @@ Task("Package")
     var settings = new DotNetCorePackSettings
     {
       OutputDirectory = artifactsDir,
-      Configuration = "Release",
+      Configuration = configuration,
       VersionSuffix = versionSuffix,
       NoBuild = true
     };
