@@ -86,6 +86,10 @@ Task("Package")
 Task("Publish")
   .WithCriteria(isMasterBranch || isDevBranch)
   .Does(() => {
+    if (string.IsNullOrWhiteSpace(nugetApiKey))
+    {
+      throw new ArgumentException("NUGET_API_KEY environment variable is not defined.");
+    }
     var pushSettings = new DotNetCoreNuGetPushSettings 
     {
       Source = nugetSource,
