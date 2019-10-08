@@ -23,7 +23,7 @@ var versionSuffix = "";
 
 if (!isMasterBranch) {
   var gitSha1 = GitLogTip("./").Sha.Substring(0,12);
-  versionSuffix = "dev+" + gitSha1;
+  versionSuffix = "dev" + gitSha1;
   Information("This is a dev build. " + versionSuffix + " will be added to the version");
 }
 
