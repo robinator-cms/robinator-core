@@ -1,0 +1,35 @@
+﻿@inject IRatingRepository repository
+<h3>RatingComponent</h3>
+
+@code {
+    [Parameter]
+    public IRateable Content { get; set; }
+    public RatingViewModel VM { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        if (Content == null)
+        {
+            throw new ArgumentNullException("No Content parameter is set.");
+        }
+        VM = await repository.GetRatingAsync(Content);
+    }
+}
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            Rating:
+            <i class="fas fa-star"></i>
+            <i class="fa@(VM.Average > 1 ? 's' : 'r') fa-star"></i>
+            <i class="fa@(VM.Average > 2 ? 's' : 'r') fa-star"></i>
+            <i class="fa@(VM.Average > 3 ? 's' : 'r') fa-star"></i>
+            <i class="fa@(VM.Average > 4 ? 's' : 'r') fa-star"></i>
+            <form id="logoutForm" class="form-inline" asp-area="Blog" asp-page="/Get" asp-route-id="@Content.Id" method="post">
+                <div class="form-group">
+                    <label>Stars:</label>
+                    <input type="number" name="stars" min="1" max="5" step="1" class="form-control m-3" />
+                </div>
+                <button type="submit" class="btn btn-primary">Rate it</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +13,7 @@ using Robinator.Core;
 using Robinator.Example.Areas.Blog.Models;
 using Robinator.Example.Areas.Identity.Services;
 using Robinator.Example.Areas.News.Models;
+using Robinator.Example.Components;
 
 namespace Robinator.Example
 {
@@ -64,6 +67,11 @@ namespace Robinator.Example
             services.AddRobinatorDeafult()
                     .AddRobinatorDefaultEntityFramework(options => options.UseInMemoryDatabase("test"));
             services.AddRobinatorCKEditor();
+
+            services.AddTransient<IRatingRepository, RatingRepository>();
+
+            services.AddServerSideBlazor();
+            services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,6 +104,7 @@ namespace Robinator.Example
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapBlazorHub();
             });
         }
     }

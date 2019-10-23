@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Robinator.Core;
+using Robinator.Example.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Robinator.Example.Areas.Blog.Models
 {
-    public class BlogPost : IContent
+    public class BlogPost : IContent, IRateable
     {
         public Guid Id { get; set; }
         [HtmlEditor]
@@ -17,7 +18,7 @@ namespace Robinator.Example.Areas.Blog.Models
         [TextEditor]
         public string Image { get; set; }
         public DateTimeOffset PublishedAt { get; set; }
-        public ICollection<BlogPostStars> Stars { get; private set; } = new HashSet<BlogPostStars>();
+        public ICollection<Rating> Stars { get; private set; } = new HashSet<Rating>();
         public string CreatedById { get; set; }
         public IdentityUser CreatedBy { get; set; }
     }

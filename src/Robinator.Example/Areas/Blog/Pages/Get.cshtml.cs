@@ -38,7 +38,6 @@ namespace Robinator.Core.Areas.Blog.Pages
             {
                 return BadRequest();
             }
-            await repository.RateAsync(id.Value, Stars);
             return await OnGetAsync(id);
         }
     }

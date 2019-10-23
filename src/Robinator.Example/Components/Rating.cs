@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 
-namespace Robinator.Example.Areas.Blog.Models
+namespace Robinator.Example.Components
 {
-    public class BlogPostStars
+    public class Rating
     {
         public Guid Id { get; set; }
         public string UserId { get; set; }
         public IdentityUser User { get; set; }
         public int Stars { get; set; }
-        public Guid BlogPostId { get; set; }
-        public BlogPost BlogPost { get; set; }
+        public Guid ContentId { get; set; }
     }
 }

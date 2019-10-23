@@ -7,6 +7,5 @@ namespace Robinator.Example.Areas.Blog.Content
 {
     public interface IBlogPostRepository : IContentRepository<BlogPost>
     {
-        Task RateAsync(Guid value, int stars);
     }
 }
