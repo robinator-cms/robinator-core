@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Robinator.Editors.CKEditor"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Robinator.App", "Robinator.App\Robinator.App.csproj", "{2BC70609-950D-485E-BE9F-3692FC85AF51}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Robinator.FileService", "Robinator.FileService\Robinator.FileService.csproj", "{AFE9F41E-B12F-4C74-8567-0B3E352E1C52}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Robinator.FileService.LocalProvider", "Robinator.FileService.LocalProvider\Robinator.FileService.LocalProvider.csproj", "{A9D158BD-93AD-4A16-AE84-3BDCCEF4F706}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{2BC70609-950D-485E-BE9F-3692FC85AF51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BC70609-950D-485E-BE9F-3692FC85AF51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BC70609-950D-485E-BE9F-3692FC85AF51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE9F41E-B12F-4C74-8567-0B3E352E1C52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE9F41E-B12F-4C74-8567-0B3E352E1C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE9F41E-B12F-4C74-8567-0B3E352E1C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE9F41E-B12F-4C74-8567-0B3E352E1C52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9D158BD-93AD-4A16-AE84-3BDCCEF4F706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9D158BD-93AD-4A16-AE84-3BDCCEF4F706}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9D158BD-93AD-4A16-AE84-3BDCCEF4F706}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9D158BD-93AD-4A16-AE84-3BDCCEF4F706}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
