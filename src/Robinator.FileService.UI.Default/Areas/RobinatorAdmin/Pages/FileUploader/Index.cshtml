@@ -1,0 +1,89 @@
+﻿@page "{*path}"
+@model Robinator.FileService.UI.Default.Areas.RobinatorAdmin.Pages.FileUploader.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "File uploader";
+    var url = "/robinatoradmin/fileuploader/" + (string.IsNullOrEmpty(Model.Path) ? "" : Model.Path + "/");
+}
+
+<span style="float:right">
+    <a href="@url?handler=NewFile">New file</a>
+    |
+    <a href="@url?handler=NewDirectory">New directory</a>
+</span>
+<h1>
+    /@Model.Path
+</h1>
+
+@if (Model.NewFolder)
+{
+    <form action="@url?handler=NewDirectory" asp-antiforgery="true" method="post">
+        <input asp-for="NewDirectoryName" />
+        <input type="submit" />
+    </form>
+}
+else if (Model.NewFile)
+{
+    <form action="@url?handler=NewFile" asp-antiforgery="true" method="post" enctype="multipart/form-data">
+        <input asp-for="Upload" />
+        <input type="submit" />
+    </form>
+}
+else
+{
+    <table class="filePickerTable">
+        <tr>
+            <th>Név</th>
+            <th>Típus</th>
+            <th></th>
+        </tr>
+        @if (!string.IsNullOrEmpty(Model.Path))
+        {
+            <tr>
+                <td><a href="@System.IO.Path.GetDirectoryName(url.TrimEnd('/'))">..</a></td>
+                <td>directory</td>
+                <td></td>
+            </tr>
+        }
+        @foreach (var directory in Model.Directories)
+        {
+            var name = System.IO.Path.GetFileName(directory.Path);
+            <tr>
+                <td><a href="@url@name">@name</a></td>
+                <td>directory</td>
+                <td></td>
+            </tr>
+        }
+        @foreach (var file in Model.Files)
+        {
+            <tr class="file" data-file="@file.Path">
+                <td>@System.IO.Path.GetFileName(file.Path)</td>
+                <td>file</td>
+                <td></td>
+            </tr>
+        }
+    </table>
+    <script>
+        if (window.opener) {
+            function selectButton(fileName) {
+                var element = document.createElement("button");
+                element.innerHTML = "Select";
+                element.addEventListener("click", function (ev) {
+                    ev.preventDefault();
+                    ev.stopImmediatePropagation();
+                    window.opener.fileSelected(fileName);
+                    window.close();
+                    return false;
+                });
+                return element;
+            }
+            var table = document.querySelector("table.filePickerTable");
+            table.querySelectorAll("tr.file").forEach(x => {
+                var cells = x.querySelectorAll("td");
+                var lastCell = cells[cells.length - 1];
+                lastCell.appendChild(selectButton(x.dataset.file));
+            })
+        }
+    </script>
+}
