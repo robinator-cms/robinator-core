@@ -59,7 +59,7 @@ namespace Robinator.Example
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
                 {
-                    //options.Conventions.AuthorizeAreaFolder("RobinatorAdmin", "/");
+                    options.Conventions.AuthorizeAreaFolder("RobinatorAdmin", "/");
                 })
                 .AddNewtonsoftJson();
             services.AddRobinatorDeafult()
