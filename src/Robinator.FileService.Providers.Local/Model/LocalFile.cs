@@ -1,7 +1,8 @@
 ﻿namespace Robinator.FileService.LocalProvider
 {
-    public class LocalDirectory : Directory
+    class LocalFile : IFile
     {
         public string Path { get; set; }
+        public string FullPath { get; set; }
     }
 }

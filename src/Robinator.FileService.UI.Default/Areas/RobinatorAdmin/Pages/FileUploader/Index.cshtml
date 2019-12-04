@@ -1,0 +1,54 @@
+﻿@page "{*path}"
+@model Robinator.FileService.UI.Default.Areas.RobinatorAdmin.Pages.FileUploader.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "File uploader";
+    var url = "/robinatoradmin/fileuploader/" + (string.IsNullOrEmpty(Model.Path) ? "" : Model.Path + "/");
+}
+
+<a href="@url?handler=NewDirectory" style="float:right">New directory</a>
+<h1>
+    /@Model.Path
+</h1>
+
+@if (Model.NewFolder)
+{
+    <form action="@url?handler=NewDirectory" asp-antiforgery="true" method="post">
+        <input asp-for="NewDirectoryName" />
+        <input type="submit" />
+    </form>
+}
+else
+{
+    <table>
+        <tr>
+            <th>Név</th>
+            <th>Típus</th>
+            <th></th>
+        </tr>
+        @if (!string.IsNullOrEmpty(Model.Path))
+        {
+            var name = "..";
+            <tr>
+                <td><a href="@url@name">@name</a></td>
+                <td>mappa</td>
+            </tr>
+        }
+        @foreach (var directory in Model.Directories)
+        {
+            var name = System.IO.Path.GetFileName(directory.Path);
+            <tr>
+                <td><a href="@url@name">@name</a></td>
+                <td>mappa</td>
+            </tr>
+        }
+        @foreach (var file in Model.Files)
+        {
+            <tr>
+                <td>@System.IO.Path.GetFileName(file.Path)</td>
+                <td>fájl</td>
+            </tr>
+        }
+    </table>
+}

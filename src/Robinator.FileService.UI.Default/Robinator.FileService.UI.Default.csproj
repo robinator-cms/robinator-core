@@ -1,16 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
-  <Import Project="../.targets" />
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Robinator.Core\Robinator.Core.csproj" />
+    <ProjectReference Include="..\Robinator.FileService\Robinator.FileService.csproj" />
   </ItemGroup>
+
 
 </Project>

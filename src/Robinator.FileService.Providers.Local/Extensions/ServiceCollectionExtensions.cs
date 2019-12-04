@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddRobinator(this IServiceCollection services, Action<LocalFileLocatorOptions> options)
+        public static IServiceCollection AddRobinatorLocalFiles(this IServiceCollection services, Action<LocalFileLocatorOptions> options)
         {
             services.Configure(options);
             services.AddTransient<IFileLocatorService, LocalFileLocatorService>();

@@ -11,6 +11,7 @@ using Robinator.Core;
 using Robinator.Example.Areas.Blog.Models;
 using Robinator.Example.Areas.Identity.Services;
 using Robinator.Example.Areas.News.Models;
+using System;
 
 namespace Robinator.Example
 {
@@ -58,12 +59,17 @@ namespace Robinator.Example
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
                 {
-                    options.Conventions.AuthorizeAreaFolder("RobinatorAdmin", "/");
+                    //options.Conventions.AuthorizeAreaFolder("RobinatorAdmin", "/");
                 })
                 .AddNewtonsoftJson();
             services.AddRobinatorDeafult()
                     .AddRobinatorDefaultEntityFramework(options => options.UseInMemoryDatabase("test"));
             services.AddRobinatorCKEditor();
+            services.AddRobinatorLocalFiles(options =>
+            {
+                options.RootPath = "wwwroot/public";
+                options.PublicPath = new Uri("/public", UriKind.Relative);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

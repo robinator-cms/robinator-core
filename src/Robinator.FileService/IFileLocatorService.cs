@@ -7,13 +7,23 @@ namespace Robinator.FileService
 {
     public interface IFileLocatorService
     {
-        Directory GetRootDirectory();
-        Task<Directory> GetRootDirectoryAsync();
-        ICollection<File> GetFiles(Directory directory, FileFilter fileFilter = default);
-        Task<ICollection<File>> GetFilesAsync(Directory directory, FileFilter fileFilter = default);
-        ICollection<Directory> GetDirectories(Directory directory, DirectoryFilter directoryFilter = default);
-        Task<ICollection<Directory>> GetDirectoriesAsync(Directory directory, DirectoryFilter directoryFilter = default);
-        Uri GetPublicUri(File file);
-        Task<Uri> GetPublicUriAsync(File file);
+        IDirectory GetRootDirectory();
+        Task<IDirectory> GetRootDirectoryAsync();
+        ICollection<IFile> GetFiles(IDirectory directory, FileFilter fileFilter = default);
+        Task<ICollection<IFile>> GetFilesAsync(IDirectory directory, FileFilter fileFilter = default);
+        ICollection<IDirectory> GetDirectories(IDirectory directory, DirectoryFilter directoryFilter = default);
+        Task<ICollection<IDirectory>> GetDirectoriesAsync(IDirectory directory, DirectoryFilter directoryFilter = default);
+        bool Exists(IDirectory directory);
+        bool Exists(IFile file);
+        Task<bool> ExistsAsync(IDirectory directory);
+        Task<bool> ExistsAsync(IFile file);
+        Uri GetPublicUri(IFile file);
+        Task<Uri> GetPublicUriAsync(IFile file);
+        IFile CreateFileFromPath(IDirectory directory, string path);
+        IDirectory CreateDirectoryFromPath(string path);
+        Task<IFile> CreateFileFromPathAsync(IDirectory directory, string path);
+        Task<IDirectory> CreateDirectoryFromPathAsync(string path);
+        void CreateDirectory(IDirectory directory, string newDirectoryName);
+        Task CreateDirectoryAsync(IDirectory directory, string newDirectoryName);
     }
 }
