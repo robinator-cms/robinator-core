@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +23,7 @@ namespace Robinator.FileService.LocalProvider
             {
                 throw new ArgumentException($"{nameof(directory)} should be {nameof(LocalDirectory)}");
             }
-            System.IO.Directory.CreateDirectory(System.IO.Path.Combine(localDirectory.FullPath, newDirectoryName));
+            Directory.CreateDirectory(Path.Combine(localDirectory.FullPath, newDirectoryName));
         }
 
         public Task CreateDirectoryAsync(IDirectory directory, string newDirectoryName)
@@ -35,7 +37,7 @@ namespace Robinator.FileService.LocalProvider
             return new LocalDirectory
             {
                 Path = path,
-                FullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(options.RootPath,path))
+                FullPath = Path.GetFullPath(Path.Combine(options.RootPath,path))
             };
         }
 
@@ -54,10 +56,10 @@ namespace Robinator.FileService.LocalProvider
             {
                 throw new ArgumentException($"{nameof(directory)} should be {nameof(LocalDirectory)}");
             }
-            var relativePath = System.IO.Path.Combine(directory.Path, path);
+            var relativePath = Path.Combine(directory.Path, path);
             return new LocalFile {
-                Path = System.IO.Path.Combine(directory.Path, path),
-                FullPath = System.IO.Path.Combine(localDirectory.FullPath, path)
+                Path = $"{directory.Path}/{path}",
+                FullPath = Path.Combine(localDirectory.FullPath, path)
             };
         }
         public Task<IFile> CreateFileFromPathAsync(string path)
@@ -76,7 +78,7 @@ namespace Robinator.FileService.LocalProvider
             {
                 throw new ArgumentException($"{nameof(directory)} should be {nameof(LocalDirectory)}");
             }
-            return System.IO.Directory.Exists(localDirectory.FullPath);
+            return Directory.Exists(localDirectory.FullPath);
         }
 
         public bool Exists(IFile file)
@@ -85,7 +87,7 @@ namespace Robinator.FileService.LocalProvider
             {
                 throw new ArgumentException($"{nameof(file)} should be {nameof(LocalDirectory)}");
             }
-            return System.IO.File.Exists(localFile.FullPath);
+            return File.Exists(localFile.FullPath);
         }
 
         public Task<bool> ExistsAsync(IDirectory directory)
@@ -112,8 +114,8 @@ namespace Robinator.FileService.LocalProvider
             {
                 throw new ArgumentException($"File cannot be outside the root folder.");
             }
-            return System.IO.Directory.GetDirectories(localDirectory.FullPath, $"{directoryFilter?.Prefix ?? ""}*")
-                .Select(x => System.IO.Path.GetFileName(x))
+            return Directory.GetDirectories(localDirectory.FullPath, $"{directoryFilter?.Prefix ?? ""}*")
+                .Select(x => Path.GetFileName(x))
                 .Where(x => !x.StartsWith('.'))
                 .Select(x => CreateDirectoryFromPath(x))
                 .Cast<IDirectory>()
@@ -139,8 +141,8 @@ namespace Robinator.FileService.LocalProvider
             {
                 throw new ArgumentException($"File cannot be outside the root folder.");
             }
-            return System.IO.Directory.GetFiles(localDirectory.FullPath, $"{fileFilter?.Prefix ?? ""}*")
-                .Select(x => System.IO.Path.GetFileName(x))
+            return Directory.GetFiles(localDirectory.FullPath, $"{fileFilter?.Prefix ?? ""}*")
+                .Select(x => Path.GetFileName(x))
                 .Where(x => !x.StartsWith('.'))
                 .Select(x => CreateFileFromPath(localDirectory, x))
                 .Cast<IFile>()
@@ -194,6 +196,48 @@ namespace Robinator.FileService.LocalProvider
         public Task<IDirectory> GetRootDirectoryAsync()
         {
             return Task.FromResult(GetRootDirectory());
+        }
+
+        public void UploadFile(IDirectory directory, IFormFile upload)
+        {
+            if (directory is null)
+            {
+                throw new ArgumentNullException(nameof(directory));
+            }
+            if (!(directory is LocalDirectory localDirectory))
+            {
+                throw new ArgumentException($"{nameof(directory)} should be {nameof(LocalDirectory)}");
+            }
+            if (!localDirectory.FullPath.StartsWith(options.RootPath))
+            {
+                throw new ArgumentException($"File cannot be outside the root folder.");
+            }
+            var filePath = Path.Combine(localDirectory.FullPath, upload.FileName);
+            using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate))
+            {
+                upload.CopyTo(fileStream);
+            }
+        }
+
+        public async Task UploadFileAsync(IDirectory directory, IFormFile upload)
+        {
+            if (directory is null)
+            {
+                throw new ArgumentNullException(nameof(directory));
+            }
+            if (!(directory is LocalDirectory localDirectory))
+            {
+                throw new ArgumentException($"{nameof(directory)} should be {nameof(LocalDirectory)}");
+            }
+            if (!localDirectory.FullPath.StartsWith(options.RootPath))
+            {
+                throw new ArgumentException($"File cannot be outside the root folder.");
+            }
+            var filePath = Path.Combine(localDirectory.FullPath, upload.FileName);
+            using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate))
+            {
+                await upload.CopyToAsync(fileStream);
+            }
         }
     }
 }

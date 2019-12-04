@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -18,6 +19,7 @@ namespace Robinator.FileService.UI.Default.Areas.RobinatorAdmin.Pages.FileUpload
         public ICollection<IDirectory> Directories { get; private set; }
         public ICollection<IFile> Files { get; private set; }
         public bool NewFolder { get; private set; }
+        public bool NewFile { get; private set; }
 
         public IndexModel(IFileLocatorService fileLocatorService)
         {
@@ -32,7 +34,7 @@ namespace Robinator.FileService.UI.Default.Areas.RobinatorAdmin.Pages.FileUpload
 
         private async Task<IDirectory> GetDirectory()
         {
-            IDirectory directory = null;
+            IDirectory directory;
             if (string.IsNullOrEmpty(Path))
             {
                 directory = await fileLocatorService.GetRootDirectoryAsync();
@@ -66,6 +68,25 @@ namespace Robinator.FileService.UI.Default.Areas.RobinatorAdmin.Pages.FileUpload
                 return;
             }
             await fileLocatorService.CreateDirectoryAsync(await GetDirectory(), NewDirectoryName);
+            await OnGetAsync();
+        }
+
+        public void OnGetNewFileAsync()
+        {
+            NewFile = true;
+        }
+        [BindProperty]
+        public IFormFile Upload { get; set; }
+
+        public async Task OnPostNewFileAsync()
+        {
+            if (Upload == null || string.IsNullOrEmpty(Upload.FileName))
+            {
+                OnGetNewFileAsync();
+                ModelState.AddModelError("NewFileName", "New file is required.");
+                return;
+            }
+            await fileLocatorService.UploadFileAsync(await GetDirectory(), Upload);
             await OnGetAsync();
         }
     }

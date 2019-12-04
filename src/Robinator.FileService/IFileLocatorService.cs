@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Robinator.FileService
 {
@@ -29,5 +30,7 @@ namespace Robinator.FileService
         Task<IDirectory> CreateDirectoryFromPathAsync(string path);
         void CreateDirectory(IDirectory directory, string newDirectoryName);
         Task CreateDirectoryAsync(IDirectory directory, string newDirectoryName);
+        void UploadFile(IDirectory directory, IFormFile upload);
+        Task UploadFileAsync(IDirectory directory, IFormFile upload);
     }
 }

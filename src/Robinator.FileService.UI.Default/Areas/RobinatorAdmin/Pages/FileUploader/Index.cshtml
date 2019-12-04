@@ -7,7 +7,11 @@
     var url = "/robinatoradmin/fileuploader/" + (string.IsNullOrEmpty(Model.Path) ? "" : Model.Path + "/");
 }
 
-<a href="@url?handler=NewDirectory" style="float:right">New directory</a>
+<span style="float:right">
+    <a href="@url?handler=NewFile">New file</a>
+    |
+    <a href="@url?handler=NewDirectory">New directory</a>
+</span>
 <h1>
     /@Model.Path
 </h1>
@@ -16,6 +20,13 @@
 {
     <form action="@url?handler=NewDirectory" asp-antiforgery="true" method="post">
         <input asp-for="NewDirectoryName" />
+        <input type="submit" />
+    </form>
+}
+else if (Model.NewFile)
+{
+    <form action="@url?handler=NewFile" asp-antiforgery="true" method="post" enctype="multipart/form-data">
+        <input asp-for="Upload" />
         <input type="submit" />
     </form>
 }
@@ -30,7 +41,7 @@ else
         @if (!string.IsNullOrEmpty(Model.Path))
         {
             <tr>
-                <td><a href="@System.IO.Path.GetDirectoryName(url.Trim('/'))">..</a></td>
+                <td><a href="@System.IO.Path.GetDirectoryName(url.TrimEnd('/'))">..</a></td>
                 <td>directory</td>
                 <td></td>
             </tr>
