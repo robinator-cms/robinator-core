@@ -43,14 +43,26 @@ namespace Robinator.FileService.LocalProvider
         {
             return Task.FromResult(CreateDirectoryFromPath(path));
         }
+        public IFile CreateFileFromPath(string path)
+        {
+            return CreateFileFromPath(GetRootDirectory(), path);
+        }
 
         public IFile CreateFileFromPath(IDirectory directory, string path)
         {
+            if (!(directory is LocalDirectory localDirectory))
+            {
+                throw new ArgumentException($"{nameof(directory)} should be {nameof(LocalDirectory)}");
+            }
             var relativePath = System.IO.Path.Combine(directory.Path, path);
             return new LocalFile {
-                Path = relativePath,
-                FullPath = System.IO.Path.GetFullPath(relativePath)
+                Path = System.IO.Path.Combine(directory.Path, path),
+                FullPath = System.IO.Path.Combine(localDirectory.FullPath, path)
             };
+        }
+        public Task<IFile> CreateFileFromPathAsync(string path)
+        {
+            return Task.FromResult(CreateFileFromPath(path));
         }
 
         public Task<IFile> CreateFileFromPathAsync(IDirectory directory, string path)
@@ -139,8 +151,16 @@ namespace Robinator.FileService.LocalProvider
         {
             return Task.FromResult(GetFiles(directory, fileFilter));
         }
+        public string GetPublicUri(string path)
+        {
+            return GetPublicUri(CreateFileFromPath(path));
+        }
+        public async Task<string> GetPublicUriAsync(string path)
+        {
+            return await GetPublicUriAsync(await CreateFileFromPathAsync(path));
+        }
 
-        public Uri GetPublicUri(IFile file)
+        public string GetPublicUri(IFile file)
         {
             if (file is null)
             {
@@ -154,13 +174,10 @@ namespace Robinator.FileService.LocalProvider
             {
                 throw new ArgumentException($"File cannot be outside the root folder.");
             }
-            var path = localFile.FullPath.Substring(options.RootPath.Length);
-            var builder = new UriBuilder(options.PublicPath);
-            builder.Path = System.IO.Path.Combine(builder.Path, path);
-            return builder.Uri;
+            return $"{options.PublicPath}/{localFile.Path}";
         }
 
-        public Task<Uri> GetPublicUriAsync(IFile file)
+        public Task<string> GetPublicUriAsync(IFile file)
         {
             return Task.FromResult(GetPublicUri(file));
         }

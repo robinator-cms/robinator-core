@@ -68,8 +68,9 @@ namespace Robinator.Example
             services.AddRobinatorLocalFiles(options =>
             {
                 options.RootPath = "wwwroot/public";
-                options.PublicPath = new Uri("/public", UriKind.Relative);
+                options.PublicPath = "/public";
             });
+            services.AddRobinatorFileServiceDefaultUI();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

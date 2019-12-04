@@ -10,6 +10,6 @@ namespace Robinator.FileService.LocalProvider
         private string rootPath;
 
         public string RootPath { get => rootPath; set => rootPath = Path.GetFullPath(value); }
-        public Uri PublicPath { get; set; }
+        public string PublicPath { get; set; }
     }
 }

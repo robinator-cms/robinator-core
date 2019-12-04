@@ -2,7 +2,9 @@
 {
     class LocalFile : IFile
     {
-        public string Path { get; set; }
+        private string path;
+
+        public string Path { get => path; set => path = value.Trim('/', System.IO.Path.DirectorySeparatorChar); }
         public string FullPath { get; set; }
     }
 }

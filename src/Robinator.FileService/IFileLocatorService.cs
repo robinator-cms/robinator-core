@@ -17,10 +17,14 @@ namespace Robinator.FileService
         bool Exists(IFile file);
         Task<bool> ExistsAsync(IDirectory directory);
         Task<bool> ExistsAsync(IFile file);
-        Uri GetPublicUri(IFile file);
-        Task<Uri> GetPublicUriAsync(IFile file);
-        IFile CreateFileFromPath(IDirectory directory, string path);
+        string GetPublicUri(string path);
+        string GetPublicUri(IFile file);
+        Task<string> GetPublicUriAsync(string path);
+        Task<string> GetPublicUriAsync(IFile file);
+        IFile CreateFileFromPath(string path);
+        IFile CreateFileFromPath(IDirectory directory, string filePath);
         IDirectory CreateDirectoryFromPath(string path);
+        Task<IFile> CreateFileFromPathAsync(string path);
         Task<IFile> CreateFileFromPathAsync(IDirectory directory, string path);
         Task<IDirectory> CreateDirectoryFromPathAsync(string path);
         void CreateDirectory(IDirectory directory, string newDirectoryName);
