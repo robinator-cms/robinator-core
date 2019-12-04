@@ -100,7 +100,12 @@ namespace Robinator.FileService.LocalProvider
             {
                 throw new ArgumentException($"File cannot be outside the root folder.");
             }
-            return System.IO.Directory.GetDirectories(localDirectory.FullPath, $"{directoryFilter?.Prefix ?? ""}*").Select(x => CreateDirectoryFromPath(x)).Cast<IDirectory>().ToList();
+            return System.IO.Directory.GetDirectories(localDirectory.FullPath, $"{directoryFilter?.Prefix ?? ""}*")
+                .Select(x => System.IO.Path.GetFileName(x))
+                .Where(x => !x.StartsWith('.'))
+                .Select(x => CreateDirectoryFromPath(x))
+                .Cast<IDirectory>()
+                .ToList();
         }
 
         public Task<ICollection<IDirectory>> GetDirectoriesAsync(IDirectory directory, DirectoryFilter directoryFilter = null)
@@ -122,7 +127,12 @@ namespace Robinator.FileService.LocalProvider
             {
                 throw new ArgumentException($"File cannot be outside the root folder.");
             }
-            return System.IO.Directory.GetFiles(localDirectory.FullPath, $"{fileFilter?.Prefix ?? ""}*").Select(x => CreateFileFromPath(localDirectory, x)).Cast<IFile>().ToList();
+            return System.IO.Directory.GetFiles(localDirectory.FullPath, $"{fileFilter?.Prefix ?? ""}*")
+                .Select(x => System.IO.Path.GetFileName(x))
+                .Where(x => !x.StartsWith('.'))
+                .Select(x => CreateFileFromPath(localDirectory, x))
+                .Cast<IFile>()
+                .ToList();
         }
 
         public Task<ICollection<IFile>> GetFilesAsync(IDirectory directory, FileFilter fileFilter = null)
